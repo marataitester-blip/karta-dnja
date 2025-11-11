@@ -313,6 +313,7 @@
 
         // Card Database: 24 Major Arcana
         const cards = [
+            // ... (вся ваша база карт, она не менялась) ...
             {
                 name: "Шут",
                 keyword: "Начало, свобода, спонтанность",
@@ -394,119 +395,4 @@
             {
                 name: "Смерть",
                 keyword: "Конец, обновление, трансформация",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/13_death_anim.mp4",
-                description: "Старое уходит, чтобы пришло новое. Не бойтесь перемен — они полезны."
-            },
-            {
-                name: "Умеренность",
-                keyword: "Гармония, терпение, баланс",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/14_temperance_anim.mp4",
-                description: "Ищите середину между крайностями, не торопитесь с решениями."
-            },
-            {
-                name: "Дьявол",
-                keyword: "Испытание, искушение, зависимость",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/15_devil_anim.mp4",
-                description: "Проанализируйте свои привычки и не позволяйте никому управлять вами."
-            },
-            {
-                name: "Башня",
-                keyword: "Внезапность, разрушение, свобода",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/16_tower_anim.mp4",
-                description: "Старые стереотипы рушатся — это возможность построить что-то новое."
-            },
-            {
-                name: "Звезда",
-                keyword: "Вдохновение, шанс, мечта",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/17_star_anim.mp4",
-                description: "Верните себе веру, наполняйтесь надеждой — ваши мечты достижимы."
-            },
-            {
-                name: "Луна",
-                keyword: "Интуиция, туман, тайна",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/18_moon_anim.mp4",
-                description: "Доверьтесь себе и не верьте слухам. Сегодня многое скрыто, но вы найдёте ответы внутри."
-            },
-            {
-                name: "Солнце",
-                keyword: "Радость, успех, жизненная сила",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/19_sun_anim.mp4",
-                description: "День удачи и счастья — почувствуйте энергию жизни!"
-            },
-            {
-                name: "Суд",
-                keyword: "Оценка, обновление, призвание",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/20_judgement_anim.mp4",
-                description: "Время подвести итоги и принять важное решение."
-            },
-            {
-                name: "Мир",
-                keyword: "Достижение, завершение, гармония",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/21_world_anim.mp4",
-                description: "Поздравьте себя с завершением большого этапа."
-            },
-            {
-                name: "Герой",
-                keyword: "Потенциал, действие, вдохновение",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/22_hero_anim.mp4",
-                description: "Всё возможно — пора раскрыть свои таланты и воплотить мечты."
-            },
-            {
-                name: "Белая карта",
-                keyword: "Пустая возможность, абсолютно новое",
-                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/23_white_card_anim.mp4",
-                description: "Лист чист — напишите свою историю заново!"
-            }
-        ];
-
-        // DOM Elements
-        const drawButton = document.getElementById('draw-btn');
-        const flipContainer = document.getElementById('flip-container');
-        const cardBlock = document.getElementById('card-block');
-        const cardMediaBox = document.getElementById('card-media-box');
-        const cardTitle = document.getElementById('card-title');
-        const cardKeyword = document.getElementById('card-keyword');
-        const cardDesc = document.getElementById('card-desc');
-        const ttsButton = document.getElementById('tts-btn');
-
-        // State
-        let currentCardText = "";
-        let isFlipped = false;
-        let isDrawing = false;
-        let audioContext = null;
-
-        // Initialize Web Audio API for click sound
-        function initAudio() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        // Create click sound using Web Audio API
-        function playClickSound() {
-            initAudio();
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = 800;
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.1);
-        }
-
-        // Draw card function
-        // (Мы вызываем эту функцию БЕСПЛАТНО или ПОСЛЕ ОПЛАТЫ)
-        function drawCard() {
-            if (isDrawing) return;
-            isDrawing = true;
-            drawButton.disabled = true;
-            
-            // Play
+                video: "
