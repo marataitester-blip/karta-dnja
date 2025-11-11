@@ -303,7 +303,8 @@
     </div>
 
     <script>
-        // ===== START: TELEGRAM SETUP (V6) =====
+        // ===== START: TELEGRAM SETUP (V7) =====
+        // Это "безопасная" инициализация. Она не "сломает" код в браузере.
         const tg = window.Telegram?.WebApp || null;
         if (tg) {
             tg.ready();
@@ -312,6 +313,7 @@
 
         // Card Database: 24 Major Arcana
         const cards = [
+            // ... (вся ваша база карт, она не менялась) ...
             {
                 name: "Шут",
                 keyword: "Начало, свобода, спонтанность",
@@ -474,8 +476,7 @@
         let isDrawing = false;
         let audioContext = null;
 
-        // (Здесь все ваши ОРИГИНАЛЬНЫЕ функции: initAudio, playClickSound, drawCard, selectAndFlip, speakText)
-        
+        // --- ВАШИ ОРИГИНАЛЬНЫЕ ФУНКЦИИ ---
         function initAudio() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -551,35 +552,41 @@
             utterance.pitch = 1.0;
             window.speechSynthesis.speak(utterance);
         }
+        // --- КОНЕЦ ОРИГИНАЛЬНЫХ ФУНКЦИЙ ---
 
-        // ===== START: NEW PAYMENT LOGIC (V6 - "Clean Fix") =====
+
+        // ===== START: NEW PAYMENT LOGIC (V7 - "ЧИСТЫЙ ФИКС") =====
         
         function showPayment() {
-            // Если мы не в Telegram (tg = null), не делаем ничего.
-            // Это чинит "мертвую кнопку" в обычном браузере.
-            if (!tg) {
-                console.error("Telegram WebApp API (tg) not found. Payment aborted.");
-                // Вежливо сообщаем об этом, изменив кнопку
-                drawButton.innerText = "Ошибка: Запустите в Telegram";
-                drawButton.disabled = true;
-                return; 
-            }
-
             // Установите вашу цену в "Звёздах" (например, 10)
             const starsAmount = 10; 
 
-            // Проверяем, что Telegram поддерживает "Звёзды"
-            if (!tg.isVersionAtLeast('6.9') || !tg.isStarsEnabled) {
-                // Вежливо сообщаем об ошибке ВНУТРИ Telegram
-                tg.showAlert('Пожалуйста, обновите ваш Telegram, чтобы оплатить "Звёздами".\n\n(Версия API: ' + tg.version + ')');
-                return;
+            // ** Шаг 1: Проверка, что мы ВНУТРИ Telegram **
+            // Если tg = null (мы в обычном браузере), то...
+            if (!tg) {
+                console.error("Telegram WebApp API (tg) not found. Payment aborted.");
+                // ...вежливо сообщаем об этом, изменив кнопку, а не "убивая" ее.
+                drawButton.innerText = "Ошибка: Запустите в Telegram";
+                drawButton.disabled = true; // Отключаем кнопку, чтобы не нажимали 2 раза
+                return; // Выходим из функции
             }
 
-            // --- Если все проверки пройдены ---
+            // ** Шаг 2: Проверка ВЕРСИИ API **
+            // (Мы УБРАЛИ проверку isStarsEnabled, которая и была проблемой)
+            if (!tg.isVersionAtLeast('6.9')) {
+                // Вежливо сообщаем об ошибке ВНУТРИ Telegram
+                tg.showAlert('Пожалуйста, обновите ваш Telegram, чтобы оплатить "Звёздами".\n\n(Нужна версия API 6.9+, у вас: ' + tg.version + ')');
+                return; // Выходим из функции
+            }
+
+            // ** Шаг 3: Попытка показать окно оплаты **
+            // Если мы дошли сюда, значит tg существует И версия API > 6.9
+            // Мы просто ПЫТАЕМСЯ показать окно.
             tg.showStarsInvoice({
                 currency: 'XTR',
                 amount: starsAmount
             }, (status) => {
+                // Эта функция сработает, когда окно закроется
                 if (status === 'paid') {
                     // ПЛАТЕЖ УСПЕШЕН!
                     drawCard(); // Показываем карту
