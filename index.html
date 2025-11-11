@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
+        /* ... (Весь ваш CSS-код остается здесь без изменений) ... */
         :root {
             --bg: #0f0f14;
             --fg: #eae6df;
@@ -302,18 +303,15 @@
     </div>
 
     <script>
-        // ===== START: TELEGRAM SETUP =====
-        // 1. Initialize the Telegram App
-        // Мы делаем проверку, чтобы приложение не "сломалось" в обычном браузере
+        // ===== START: TELEGRAM SETUP (V6) =====
         const tg = window.Telegram?.WebApp || null;
         if (tg) {
-            tg.ready(); // Сообщаем Telegram, что приложение готово
+            tg.ready();
         }
-        // ===================================
+        // ======================================
 
         // Card Database: 24 Major Arcana
         const cards = [
-            // ... (вся ваша база карт, она не менялась) ...
             {
                 name: "Шут",
                 keyword: "Начало, свобода, спонтанность",
@@ -395,4 +393,252 @@
             {
                 name: "Смерть",
                 keyword: "Конец, обновление, трансформация",
-                video: "
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/13_death_anim.mp4",
+                description: "Старое уходит, чтобы пришло новое. Не бойтесь перемен — они полезны."
+            },
+            {
+                name: "Умеренность",
+                keyword: "Гармония, терпение, баланс",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/14_temperance_anim.mp4",
+                description: "Ищите середину между крайностями, не торопитесь с решениями."
+            },
+            {
+                name: "Дьявол",
+                keyword: "Испытание, искушение, зависимость",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/15_devil_anim.mp4",
+                description: "Проанализируйте свои привычки и не позволяйте никому управлять вами."
+            },
+            {
+                name: "Башня",
+                keyword: "Внезапность, разрушение, свобода",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/16_tower_anim.mp4",
+                description: "Старые стереотипы рушатся — это возможность построить что-то новое."
+            },
+            {
+                name: "Звезда",
+                keyword: "Вдохновение, шанс, мечта",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/17_star_anim.mp4",
+                description: "Верните себе веру, наполняйтесь надеждой — ваши мечты достижимы."
+            },
+            {
+                name: "Луна",
+                keyword: "Интуиция, туман, тайна",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/18_moon_anim.mp4",
+                description: "Доверьтесь себе и не верьте слухам. Сегодня многое скрыто, но вы найдёте ответы внутри."
+            },
+            {
+                name: "Солнце",
+                keyword: "Радость, успех, жизненная сила",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/19_sun_anim.mp4",
+                description: "День удачи и счастья — почувствуйте энергию жизни!"
+            },
+            {
+                name: "Суд",
+                keyword: "Оценка, обновление, призвание",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/20_judgement_anim.mp4",
+                description: "Время подвести итоги и принять важное решение."
+            },
+            {
+                name: "Мир",
+                keyword: "Достижение, завершение, гармония",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/21_world_anim.mp4",
+                description: "Поздравьте себя с завершением большого этапа."
+            },
+            {
+                name: "Герой",
+                keyword: "Потенциал, действие, вдохновение",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/22_hero_anim.mp4",
+                description: "Всё возможно — пора раскрыть свои таланты и воплотить мечты."
+            },
+            {
+                name: "Белая карта",
+                keyword: "Пустая возможность, абсолютно новое",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/23_white_card_anim.mp4",
+                description: "Лист чист — напишите свою историю заново!"
+            }
+        ];
+
+        // DOM Elements
+        const drawButton = document.getElementById('draw-btn');
+        const flipContainer = document.getElementById('flip-container');
+        const cardBlock = document.getElementById('card-block');
+        const cardMediaBox = document.getElementById('card-media-box');
+        const cardTitle = document.getElementById('card-title');
+        const cardKeyword = document.getElementById('card-keyword');
+        const cardDesc = document.getElementById('card-desc');
+        const ttsButton = document.getElementById('tts-btn');
+
+        // State
+        let currentCardText = "";
+        let isFlipped = false;
+        let isDrawing = false;
+        let audioContext = null;
+
+        // (Здесь все ваши ОРИГИНАЛЬНЫЕ функции: initAudio, playClickSound, drawCard, selectAndFlip, speakText)
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        function playClickSound() {
+            initAudio();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        function drawCard() {
+            if (isDrawing) return;
+            isDrawing = true;
+            drawButton.disabled = true;
+            try {
+                playClickSound();
+            } catch (e) {
+                console.warn("Could not play click sound:", e);
+            }
+            if (isFlipped) {
+                flipContainer.classList.remove('is-flipped');
+                cardBlock.classList.remove('visible');
+                setTimeout(selectAndFlip, 400);
+            } else {
+                selectAndFlip();
+            }
+        }
+        
+        function selectAndFlip() {
+            const idx = Math.floor(Math.random() * cards.length);
+            const card = cards[idx];
+            const videoHtml = `<video src="${card.video}" autoplay loop muted playsinline class="card-media" aria-label="${card.name} анимация"></video>`;
+            cardMediaBox.innerHTML = videoHtml;
+            cardTitle.textContent = card.name;
+            cardKeyword.textContent = card.keyword;
+            cardDesc.innerHTML = `<p>${card.description}</p>`;
+            currentCardText = `Карта дня: ${card.name}. Ключевое слово: ${card.keyword}. ${card.description}`;
+            flipContainer.classList.add('is-flipped');
+            isFlipped = true;
+            setTimeout(() => {
+                cardBlock.classList.add('visible');
+            }, 400);
+            setTimeout(() => {
+                isDrawing = false;
+                drawButton.disabled = false;
+            }, 800);
+        }
+
+        function speakText() {
+            if (!currentCardText || !window.speechSynthesis) {
+                console.log("TTS not supported or no text available.");
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(currentCardText);
+            const voices = window.speechSynthesis.getVoices();
+            const ruVoice = voices.find(v => v.lang === 'ru-RU' || v.lang.startsWith('ru'));
+            if (ruVoice) {
+                utterance.voice = ruVoice;
+            }
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.8;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ===== START: NEW PAYMENT LOGIC (V6 - "Clean Fix") =====
+        
+        function showPayment() {
+            // Если мы не в Telegram (tg = null), не делаем ничего.
+            // Это чинит "мертвую кнопку" в обычном браузере.
+            if (!tg) {
+                console.error("Telegram WebApp API (tg) not found. Payment aborted.");
+                // Вежливо сообщаем об этом, изменив кнопку
+                drawButton.innerText = "Ошибка: Запустите в Telegram";
+                drawButton.disabled = true;
+                return; 
+            }
+
+            // Установите вашу цену в "Звёздах" (например, 10)
+            const starsAmount = 10; 
+
+            // Проверяем, что Telegram поддерживает "Звёзды"
+            if (!tg.isVersionAtLeast('6.9') || !tg.isStarsEnabled) {
+                // Вежливо сообщаем об ошибке ВНУТРИ Telegram
+                tg.showAlert('Пожалуйста, обновите ваш Telegram, чтобы оплатить "Звёздами".\n\n(Версия API: ' + tg.version + ')');
+                return;
+            }
+
+            // --- Если все проверки пройдены ---
+            tg.showStarsInvoice({
+                currency: 'XTR',
+                amount: starsAmount
+            }, (status) => {
+                if (status === 'paid') {
+                    // ПЛАТЕЖ УСПЕШЕН!
+                    drawCard(); // Показываем карту
+                } else if (status === 'failed') {
+                    tg.showAlert('Платеж не прошел. Пожалуйста, попробуйте еще раз.');
+                } else if (status === 'cancelled') {
+                    // Пользователь отменил, ничего не делаем
+                    console.log('Оплата отменена');
+                }
+            });
+        }
+
+        // Это НОВАЯ главная функция, которая решает, что делать при клике
+        function handleDrawClick() {
+            const today = new Date().toDateString();
+            const lastUsed = localStorage.getItem('lastUsedDate');
+            
+            // Это новый день? Если да, сбрасываем бесплатную попытку.
+            if (lastUsed !== today) {
+                localStorage.setItem('freeCardUsed', 'false');
+                localStorage.setItem('lastUsedDate', today);
+            }
+
+            const freeCardUsed = localStorage.getItem('freeCardUsed');
+
+            // Проверяем, есть ли у пользователя бесплатная карта на сегодня
+            if (freeCardUsed === 'false' || !freeCardUsed) {
+                // ДА, это первая карта за сегодня. Даем бесплатно.
+                localStorage.setItem('freeCardUsed', 'true');
+                localStorage.setItem('lastUsedDate', today);
+                
+                // Вызываем ОРИГИНАЛЬНУЮ функцию показа карты
+                drawCard(); 
+            } else {
+                // НЕТ, бесплатная карта уже использована. Показываем оплату.
+                showPayment();
+            }
+        }
+        // ===== END: NEW PAYMENT LOGIC =====
+
+
+        // Event Listeners (Мы "оживляем" кнопки с помощью НОВОЙ функции)
+        drawButton.addEventListener('click', handleDrawClick);
+        ttsButton.addEventListener('click', speakText);
+        
+        // (Здесь остаток вашего ОРИГИНАЛЬНОГО кода для TTS и Audio)
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    window.speechSynthesis.getVoices();
+                };
+            }
+            window.speechSynthesis.getVoices();
+        } else {
+            ttsButton.disabled = true;
+            ttsButton.title = "Озвучка не поддерживается в вашем браузере";
+        }
+        
+        document.addEventListener('click', initAudio, { once: true });
+    </script>
+</body>
+</html>
