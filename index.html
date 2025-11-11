@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оракул Пути Героя</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Оракул">
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
@@ -304,6 +302,15 @@
     </div>
 
     <script>
+        // ===== START: TELEGRAM SETUP =====
+        // 1. Initialize the Telegram App
+        // Мы делаем проверку, чтобы приложение не "сломалось" в обычном браузере
+        const tg = window.Telegram?.WebApp || null;
+        if (tg) {
+            tg.ready(); // Сообщаем Telegram, что приложение готово
+        }
+        // ===================================
+
         // Card Database: 24 Major Arcana
         const cards = [
             {
@@ -496,6 +503,7 @@
         }
 
         // Draw card function
+        // (Мы вызываем эту функцию БЕСПЛАТНО или ПОСЛЕ ОПЛАТЫ)
         function drawCard() {
             if (isDrawing) return;
             isDrawing = true;
@@ -579,8 +587,76 @@
             window.speechSynthesis.speak(utterance);
         }
 
+        // ===== START: NEW PAYMENT LOGIC (НАША ПРАВКА) =====
+
+        // Эта функция показывает окно оплаты
+        function showPayment() {
+            // Если мы не в Telegram, просто выходим
+            if (!tg) {
+                alert('Эта функция работает только внутри Telegram.');
+                return;
+            }
+
+            // Установите вашу цену в "Звёздах" (например, 10)
+            const starsAmount = 10; 
+
+            // Проверяем, что Telegram поддерживает "Звёзды"
+            if (!tg.isVersionAtLeast('6.9') || !tg.isStarsEnabled) {
+                tg.showAlert('Пожалуйста, обновите ваш Telegram, чтобы оплатить "Звёздами".');
+                return;
+            }
+
+            // Показываем окно оплаты
+            tg.showStarsInvoice({
+                currency: 'XTR',
+                amount: starsAmount
+            }, (status) => {
+                // Эта функция сработает, когда окно закроется
+
+                if (status === 'paid') {
+                    // ПЛАТЕЖ УСПЕШЕН!
+                    // Теперь показываем карту.
+                    drawCard();
+                } else if (status === 'failed') {
+                    tg.showAlert('Платеж не прошел. Пожалуйста, попробуйте еще раз.');
+                } else if (status === 'cancelled') {
+                    // Пользователь отменил. Ничего не делаем.
+                    console.log('Оплата отменена');
+                }
+            });
+        }
+
+        // Это НОВАЯ главная функция, которая решает, что делать при клике
+        function handleDrawClick() {
+            const today = new Date().toDateString();
+            const lastUsed = localStorage.getItem('lastUsedDate');
+            
+            // Это новый день? Если да, сбрасываем бесплатную попытку.
+            if (lastUsed !== today) {
+                localStorage.setItem('freeCardUsed', 'false');
+                localStorage.setItem('lastUsedDate', today);
+            }
+
+            const freeCardUsed = localStorage.getItem('freeCardUsed');
+
+            // Проверяем, есть ли у пользователя бесплатная карта на сегодня
+            if (freeCardUsed === 'false' || !freeCardUsed) {
+                // ДА, это первая карта за сегодня. Даем бесплатно.
+                localStorage.setItem('freeCardUsed', 'true');
+                localStorage.setItem('lastUsedDate', today);
+                
+                // Вызываем ОРИГИНАЛЬНУЮ функцию показа карты
+                drawCard(); 
+            } else {
+                // НЕТ, бесплатная карта уже использована. Показываем оплату.
+                showPayment();
+            }
+        }
+        // ===== END: NEW PAYMENT LOGIC =====
+
+
         // Event Listeners
-        drawButton.addEventListener('click', drawCard);
+        drawButton.addEventListener('click', handleDrawClick); // <-- НАША ПРАВКА
         ttsButton.addEventListener('click', speakText);
         
         // Load voices (required for some browsers)
