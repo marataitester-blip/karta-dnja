@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оракул Пути Героя</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Оракул">
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
@@ -60,31 +58,7 @@
             letter-spacing: 0.5px;
             font-weight: 600;
         }
-
-        /* Status bar for attempts */
-        .status-bar {
-            background: var(--card-bg);
-            border: 1px solid rgba(199, 168, 123, 0.3);
-            border-radius: 12px;
-            padding: 12px 18px;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-            color: var(--muted);
-        }
-
-        .status-bar.premium {
-            background: linear-gradient(135deg, rgba(199, 168, 123, 0.2), rgba(199, 168, 123, 0.1));
-            border-color: var(--accent);
-        }
-
-        .status-text {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
         
-        /* Flip Card Animation */
         .flip-card-container {
             background-color: transparent;
             width: 95%;
@@ -157,7 +131,6 @@
             object-fit: cover;
         }
         
-        /* Card Info Block */
         .card-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -209,7 +182,6 @@
             padding: 8px 0;
         }
         
-        /* Buttons */
         .draw-btn {
             display: inline-block;
             background: var(--accent);
@@ -274,19 +246,7 @@
             opacity: 0.4;
             cursor: not-allowed;
         }
-
-        /* No access message */
-        .no-access-msg {
-            background: rgba(199, 168, 123, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 15px;
-            font-size: 0.95em;
-            color: var(--accent);
-        }
         
-        /* Responsive adjustments */
         @media (max-width: 380px) {
             h1 {
                 font-size: 1.8em;
@@ -317,13 +277,6 @@
     <div class="tarot-app">
         <h1>Карта дня</h1>
         
-        <!-- Status bar -->
-        <div id="status-bar" class="status-bar">
-            <div class="status-text" id="status-text">
-                Загрузка...
-            </div>
-        </div>
-        
         <div class="flip-card-container" id="flip-container">
             <div class="flip-card-inner">
                 <div class="flip-card-front" id="card-back-box">
@@ -342,24 +295,17 @@
         </div>
         
         <button class="draw-btn" id="draw-btn">Вытянуть карту дня</button>
-        
-        <div id="no-access-msg" class="no-access-msg" style="display: none;">
-            ⚠️ Бесплатные попытки закончились.<br>
-            Вернитесь в бот и купите доступ на сутки за 10 ⭐
-        </div>
     </div>
 
     <script>
         // Initialize Telegram Web App
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+            tg.ready();
+            tg.expand();
+        }
 
-        // Get user ID from Telegram
-        const userId = tg.initDataUnsafe?.user?.id;
-        const apiUrl = window.location.origin;
-
-        // Card Database: 24 Major Arcana
+        // Card Database
         const cards = [
             {
                 name: "Шут",
@@ -395,3 +341,32 @@
                 name: "Иерофант",
                 keyword: "Традиция, наставление, обучение",
                 video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/05_hierophant_anim.mp4",
+                description: "Прислушайтесь к мудрым советам, опирайтесь на опыт предшественников."
+            },
+            {
+                name: "Влюбленные",
+                keyword: "Выбор, гармония, чувства",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/06_lovers_anim.mp4",
+                description: "Сердце подскажет верный путь. Пришло время для признаний и важных решений."
+            },
+            {
+                name: "Колесница",
+                keyword: "Триумф, движение, размах",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/07_chariot_anim.mp4",
+                description: "Преодолейте препятствия и уверенно двигайтесь вперёд — это день для побед."
+            },
+            {
+                name: "Правосудие",
+                keyword: "Справедливость, баланс, закон",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/08_justice_anim.mp4",
+                description: "Оценивайте ситуацию беспристрастно, принимайте решения честно."
+            },
+            {
+                name: "Отшельник",
+                keyword: "Размышления, одиночество, поиск истины",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/09_hermit_anim.mp4",
+                description: "Найдите время для себя, прислушайтесь к внутреннему свету."
+            },
+            {
+                name: "Колесо Фортуны",
+                keyword: "Удача, перемены,
