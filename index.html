@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оракул Пути Героя</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Оракул">
     
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        /* ... (Весь ваш CSS-код. Он в полном порядке и не менялся) ... */
         :root {
             --bg: #0f0f14;
             --fg: #eae6df;
@@ -303,16 +304,7 @@
     </div>
 
     <script>
-        // ===== START: TELEGRAM "TOY" INTEGRATION (V9) =====
-        // Это "безопасная" инициализация. Она не "сломает" код в браузере.
-        const tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
-        if (tg) {
-            tg.ready();
-        }
-        // ======================================
-
         // Card Database: 24 Major Arcana
-        // ЭТО ВАША ОРИГИНАЛЬНАЯ, РАБОЧАЯ БАЗА ДАННЫХ. Я ее вернул.
         const cards = [
             {
                 name: "Шут",
@@ -324,4 +316,290 @@
                 name: "Маг",
                 keyword: "Воля, мастерство, энергия",
                 video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/01_magician_anim.mp4",
-                description: "Все ресурсы у вас в руках. Примените свои
+                description: "Все ресурсы у вас в руках. Примените свои навыки, будьте активны — сегодня ваше время проявить себя."
+            },
+            {
+                name: "Верховная Жрица",
+                keyword: "Мудрость, тайна, интуиция",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/02_high_priestess_anim.mp4",
+                description: "Прислушайтесь к внутреннему голосу и не игнорируйте подсказки судьбы. Доверяйте своему чутью."
+            },
+            {
+                name: "Императрица",
+                keyword: "Изобилие, забота, творчество",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/03_empress_anim.mp4",
+                description: "Всё вокруг наполняется энергией роста и тепла. День для заботы о себе и близких."
+            },
+            {
+                name: "Император",
+                keyword: "Структура, контроль, власть",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/04_emperor_anim.mp4",
+                description: "Важны дисциплина и порядок. Определите цели и уверенно к ним двигайтесь."
+            },
+            {
+                name: "Иерофант",
+                keyword: "Традиция, наставление, обучение",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/05_hierophant_anim.mp4",
+                description: "Прислушайтесь к мудрым советам, опирайтесь на опыт предшественников."
+            },
+            {
+                name: "Влюбленные",
+                keyword: "Выбор, гармония, чувства",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/06_lovers_anim.mp4",
+                description: "Сердце подскажет верный путь. Пришло время для признаний и важных решений."
+            },
+            {
+                name: "Колесница",
+                keyword: "Триумф, движение, размах",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/07_chariot_anim.mp4",
+                description: "Преодолейте препятствия и уверенно двигайтесь вперёд — это день для побед."
+            },
+            {
+                name: "Правосудие",
+                keyword: "Справедливость, баланс, закон",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/08_justice_anim.mp4",
+                description: "Оценивайте ситуацию беспристрастно, принимайте решения честно."
+            },
+            {
+                name: "Отшельник",
+                keyword: "Размышления, одиночество, поиск истины",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/09_hermit_anim.mp4",
+                description: "Найдите время для себя, прислушайтесь к внутреннему свету."
+            },
+            {
+                name: "Колесо Фортуны",
+                keyword: "Удача, перемены, судьба",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/10_wheel_of_fortune_anim.mp4",
+                description: "Несколько неожиданных поворотов дня изменят ваши планы — примите вызов!"
+            },
+            {
+                name: "Сила",
+                keyword: "Стойкость, энергия, мужество",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/11_strength_anim.mp4",
+                description: "Используйте внутренние ресурсы для преодоления любых трудностей."
+            },
+            {
+                name: "Повешенный",
+                keyword: "Пауза, смена взгляда, жертва",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/12_hanged_man_anim.mp4",
+                description: "Посмотрите на ситуацию с другого ракурса — вы найдёте новые решения."
+            },
+            {
+                name: "Смерть",
+                keyword: "Конец, обновление, трансформация",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/13_death_anim.mp4",
+                description: "Старое уходит, чтобы пришло новое. Не бойтесь перемен — они полезны."
+            },
+            {
+                name: "Умеренность",
+                keyword: "Гармония, терпение, баланс",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/14_temperance_anim.mp4",
+                description: "Ищите середину между крайностями, не торопитесь с решениями."
+            },
+            {
+                name: "Дьявол",
+                keyword: "Испытание, искушение, зависимость",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/15_devil_anim.mp4",
+                description: "Проанализируйте свои привычки и не позволяйте никому управлять вами."
+            },
+            {
+                name: "Башня",
+                keyword: "Внезапность, разрушение, свобода",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/16_tower_anim.mp4",
+                description: "Старые стереотипы рушатся — это возможность построить что-то новое."
+            },
+            {
+                name: "Звезда",
+                keyword: "Вдохновение, шанс, мечта",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/17_star_anim.mp4",
+                description: "Верните себе веру, наполняйтесь надеждой — ваши мечты достижимы."
+            },
+            {
+                name: "Луна",
+                keyword: "Интуиция, туман, тайна",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/18_moon_anim.mp4",
+                description: "Доверьтесь себе и не верьте слухам. Сегодня многое скрыто, но вы найдёте ответы внутри."
+            },
+            {
+                name: "Солнце",
+                keyword: "Радость, успех, жизненная сила",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/19_sun_anim.mp4",
+                description: "День удачи и счастья — почувствуйте энергию жизни!"
+            },
+            {
+                name: "Суд",
+                keyword: "Оценка, обновление, призвание",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/20_judgement_anim.mp4",
+                description: "Время подвести итоги и принять важное решение."
+            },
+            {
+                name: "Мир",
+                keyword: "Достижение, завершение, гармония",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/21_world_anim.mp4",
+                description: "Поздравьте себя с завершением большого этапа."
+            },
+            {
+                name: "Герой",
+                keyword: "Потенциал, действие, вдохновение",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/22_hero_anim.mp4",
+                description: "Всё возможно — пора раскрыть свои таланты и воплотить мечты."
+            },
+            {
+                name: "Белая карта",
+                keyword: "Пустая возможность, абсолютно новое",
+                video: "https://cdn.jsdelivr.net/gh/marataitester-blip/tarot/23_white_card_anim.mp4",
+                description: "Лист чист — напишите свою историю заново!"
+            }
+        ];
+
+        // DOM Elements
+        const drawButton = document.getElementById('draw-btn');
+        const flipContainer = document.getElementById('flip-container');
+        const cardBlock = document.getElementById('card-block');
+        const cardMediaBox = document.getElementById('card-media-box');
+        const cardTitle = document.getElementById('card-title');
+        const cardKeyword = document.getElementById('card-keyword');
+        const cardDesc = document.getElementById('card-desc');
+        const ttsButton = document.getElementById('tts-btn');
+
+        // State
+        let currentCardText = "";
+        let isFlipped = false;
+        let isDrawing = false;
+        let audioContext = null;
+
+        // Initialize Web Audio API for click sound
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Create click sound using Web Audio API
+        function playClickSound() {
+            initAudio();
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Draw card function
+        function drawCard() {
+            if (isDrawing) return;
+            isDrawing = true;
+            drawButton.disabled = true;
+            
+            // Play click sound
+            try {
+                playClickSound();
+            } catch (e) {
+                console.warn("Could not play click sound:", e);
+            }
+            
+            // If card already flipped, flip back first
+            if (isFlipped) {
+                flipContainer.classList.remove('is-flipped');
+                cardBlock.classList.remove('visible');
+                
+                setTimeout(selectAndFlip, 400);
+            } else {
+                selectAndFlip();
+            }
+        }
+        
+        function selectAndFlip() {
+            // Select random card
+            const idx = Math.floor(Math.random() * cards.length);
+            const card = cards[idx];
+            
+            // Create video element
+            const videoHtml = `<video src="${card.video}" autoplay loop muted playsinline class="card-media" aria-label="${card.name} анимация"></video>`;
+            
+            // Update card content
+            cardMediaBox.innerHTML = videoHtml;
+            cardTitle.textContent = card.name;
+            cardKeyword.textContent = card.keyword;
+            cardDesc.innerHTML = `<p>${card.description}</p>`;
+            
+            // Save text for TTS
+            currentCardText = `Карта дня: ${card.name}. Ключевое слово: ${card.keyword}. ${card.description}`;
+            
+            // Flip card
+            flipContainer.classList.add('is-flipped');
+            isFlipped = true;
+            
+            // Show card block with animation
+            setTimeout(() => {
+                cardBlock.classList.add('visible');
+            }, 400);
+            
+            // Re-enable button
+            setTimeout(() => {
+                isDrawing = false;
+                drawButton.disabled = false;
+            }, 800);
+        }
+
+        // Text-to-Speech function
+        function speakText() {
+            if (!currentCardText || !window.speechSynthesis) {
+                console.log("TTS not supported or no text available.");
+                return;
+            }
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(currentCardText);
+            
+            // Try to find Russian voice
+            const voices = window.speechSynthesis.getVoices();
+            const ruVoice = voices.find(v => v.lang === 'ru-RU' || v.lang.startsWith('ru'));
+            
+            if (ruVoice) {
+                utterance.voice = ruVoice;
+            }
+            
+            utterance.lang = 'ru-RU';
+            utterance.rate = 0.8;
+            utterance.pitch = 1.0;
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Event Listeners
+        drawButton.addEventListener('click', drawCard);
+        ttsButton.addEventListener('click', speakText);
+        
+        // Load voices (required for some browsers)
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    window.speechSynthesis.getVoices();
+                };
+            }
+            // Initial load
+            window.speechSynthesis.getVoices();
+        } else {
+            // Disable TTS button if not supported
+            ttsButton.disabled = true;
+            ttsButton.title = "Озвучка не поддерживается в вашем браузере";
+        }
+        
+        // Initialize audio context on first user interaction (required by some browsers)
+        document.addEventListener('click', initAudio, { once: true });
+    </script>
+</body>
+</html>
