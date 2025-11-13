@@ -1,0 +1,14 @@
+package.json
+{
+  "name": "karta-dnja-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot для гадания Таро с монетизацией",
+  "main": "api/webhook.js",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0",
+    "@vercel/kv": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
