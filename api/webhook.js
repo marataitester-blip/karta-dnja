@@ -158,3 +158,47 @@ async function handleSuccessfulPayment(msg) {
   if (payload === 'daily_access') {
     await db.activatePaidAccess(userId, 24);
     await bot.sendMessage(chatId,
+      '✅ Оплата прошла успешно! Доступ активирован на 24 часа.\n\n' +
+      '🔮 Откройте карты Таро и наслаждайтесь неограниченными раскладами!',
+      { reply_markup: { inline_keyboard: [[{ text: '🔮 Открыть карты', web_app: { url: webAppUrl } }]] }}
+    );
+  } else {
+    await bot.sendMessage(chatId,
+      '💝 Спасибо за поддержку! Ваш донат очень важен для развития проекта.',
+      { reply_markup: { inline_keyboard: [[{ text: '« Назад в меню', callback_data: 'back_to_menu' }]] }}
+    );
+  }
+}
+
+// Главный handler для Vercel
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    try {
+      const { message, callback_query, pre_checkout_query } = req.body;
+      
+      if (message) {
+        if (message.text === '/start') {
+          await handleStart(message);
+        }
+        if (message.successful_payment) {
+          await handleSuccessfulPayment(message);
+        }
+      }
+      
+      if (callback_query) {
+        await handleCallback(callback_query);
+      }
+      
+      if (pre_checkout_query) {
+        await handlePreCheckout(pre_checkout_query);
+      }
+      
+      return res.status(200).json({ ok: true });
+    } catch (error) {
+      console.error('Webhook error:', error);
+      return res.status(200).json({ ok: true });
+    }
+  }
+  
+  return res.status(200).send('Bot webhook is running');
+}
