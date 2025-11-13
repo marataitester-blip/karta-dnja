@@ -146,8 +146,7 @@
             attemptsText.textContent = '✨ У вас безлимитный доступ на 24 часа';
             attemptsText.style.color = 'var(--accent)';
             paymentBlock.style.display = 'none';
-        } else if (!userAccess.hasAccess) {
-            // No access - show payment prompt
+    } else if (userAccess.attemptsLeft <= 0 && !userAccess.isPaid) {            // No access - show payment prompt
             accessInfo.style.display = 'none';
             paymentBlock.style.display = 'block';
         } else {
