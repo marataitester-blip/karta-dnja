@@ -292,9 +292,10 @@
         <!-- Payment Required Block -->
         <div id="payment-block" style="display: none; margin: 20px 0; padding: 20px; background: var(--card-bg); border-radius: 12px; border: 1px solid rgba(199, 168, 123, 0.3);">
             <p style="font-size: 1.2em; color: var(--fg); margin-bottom: 15px;">❌ Лимит исчерпан</p>
-            <p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Вы использовали все 5 бесплатных попыток сегодня.</p>
-            <p style="font-size: 1em; color: var(--fg); margin-bottom: 20px;">💎 Оплатите 10 Telegram Stars для неограниченного доступа на 24 часа</p>
-            <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg);">Вернуться в бот для оплаты</button>
+            <p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Вы использовали все 5 бесплатных попыток сегодня.</p><p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Выберите вариант оплаты:</p>
+                <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg); margin-bottom: 10px;">💎 10 Stars - 24 часа</button>
+                <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg); margin-bottom: 10px;">💎 25 Stars - 3 дня</button>
+                <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg);">💎 50 Stars - 7 дней</button>в бот для оплаты</button>
         </div>
         
         <div class="flip-card-container" id="flip-container">
