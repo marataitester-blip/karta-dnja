@@ -5,9 +5,50 @@
     // Configuration
     const API_BASE = '/api';
     const FREE_ATTEMPTS = 5;
+
+        // LocalStorage functions
+    const STORAGE_KEY = 'tarotAppAccess';
+    
+    function saveToStorage(data) {
+        try {
+            const storageData = {
+                ...data,
+                lastUpdate: new Date().toISOString(),
+                date: new Date().toDateString()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(storageData));
+        } catch (e) {
+            console.error('Failed to save to localStorage:', e);
+        }
+    }
+    
+    function loadFromStorage() {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return null;
+            
+            const data = JSON.parse(stored);
+            const today = new Date().toDateString();
+            
+            // Reset attempts if it's a new day
+            if (data.date !== today) {
+                return {
+                    ...data,
+                    attemptsLeft: FREE_ATTEMPTS,
+                    date: today,
+                    isPaid: false // Reset paid status daily
+                };
+            }
+            
+            return data;
+        } catch (e) {
+            console.error('Failed to load from localStorage:', e);
+            return null;
+        }
+    }
     
     // State
-    let userAccess = {
+    let userAccesloadFromStorage() || {
         userId: null,
         hasAccess: true,
         isPaid: false,
@@ -42,6 +83,7 @@
             userAccess.hasAccess = data.hasAccess;
             userAccess.isPaid = data.isPaid;
             userAccess.attemptsLeft = data.attemptsLeft;
+                    saveToStorage(userAccess);
             
             updateUI();
             
@@ -73,6 +115,7 @@
             // Decrease local counter
             if (userAccess.attemptsLeft > 0) {
                 userAccess.attemptsLeft--;
+                        saveToStorage(userAccess);
             }
             
             // Check if limit reached
