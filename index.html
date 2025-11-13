@@ -282,12 +282,8 @@
 </head>
 <body>
     <div class="tarot-app">
-        <h1>Карта дня</h1>
+         <h1>Карта дня</h1>
         
-        <div class="flip-card-container" id="flip-container">
-            <div class="flip-card-inner">
-                <div class
-                    
         <!-- Access Control Info -->
         <div id="access-info" style="margin: 15px 0; padding: 12px; background: rgba(199, 168, 123, 0.1); border-radius: 8px; display: none;">
             <p id="attempts-text" style="margin: 0; font-size: 1em; color: var(--accent);"></p>
@@ -299,12 +295,18 @@
             <p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Вы использовали все 5 бесплатных попыток сегодня.</p>
             <p style="font-size: 1em; color: var(--fg); margin-bottom: 20px;">💎 Оплатите 10 Telegram Stars для неограниченного доступа на 24 часа</p>
             <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg);">Вернуться в бот для оплаты</button>
-        </div>="flip-card-front" id="card-back-box">
+        </div>
+        
+        <div class="flip-card-container" id="flip-container">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" id="card-back-box">
                     <div class="card-back-pattern"></div>
                 </div>
                 <div class="flip-card-back" id="card-media-box">
                 </div>
             </div>
+        </div>
+
         </div>
 
         <div id="card-block" class="card-block">
