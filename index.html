@@ -143,7 +143,7 @@
             box-shadow: 0 6px 32px rgba(0,0,0,0.4);
             padding: 22px;
             margin-bottom: 25px;
-            display: none;
+            
             opacity: 0;
             animation: fadeIn 0.5s ease-in forwards;
             animation-delay: 0.4s;
@@ -285,12 +285,12 @@
          <h1>Карта дня</h1>
         
         <!-- Access Control Info -->
-        <div id="access-info" style="margin: 15px 0; padding: 12px; background: rgba(199, 168, 123, 0.1); border-radius: 8px; display: none;">
+        <div id="access-info" style="margin: 15px 0; padding: 12px; background: rgba(199, 168, 123, 0.1); border-radius: 8px; ">
             <p id="attempts-text" style="margin: 0; font-size: 1em; color: var(--accent);"></p>
         </div>
         
         <!-- Payment Required Block -->
-        <div id="payment-block" style="display: none; margin: 20px 0; padding: 20px; background: var(--card-bg); border-radius: 12px; border: 1px solid rgba(199, 168, 123, 0.3);">
+        <div id="payment-block" style=" margin: 20px 0; padding: 20px; background: var(--card-bg); border-radius: 12px; border: 1px solid rgba(199, 168, 123, 0.3);">
             <p style="font-size: 1.2em; color: var(--fg); margin-bottom: 15px;">❌ Лимит исчерпан</p>
             <p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Вы использовали все 5 бесплатных попыток сегодня.</p><p style="font-size: 1em; color: var(--muted); margin-bottom: 15px;">Выберите вариант оплаты:</p>
                 <button onclick="Telegram.WebApp.close()" class="draw-btn" style="background: var(--accent); color: var(--bg); margin-bottom: 10px;">💎 10 Stars - 24 часа</button>
